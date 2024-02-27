@@ -41,17 +41,6 @@ app.get('/api/dashboard', jwtMW, (req, res) => {
     })
 })
 
-app.get('/api/settings', jwtMW, (req, res) => {
-    res.json({
-        success: true,
-        myContent: 'Settings page that only logged in people can see.' 
-    })
-})
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
-})
-
 app.post('/api/login', (req, res) => {
     const {username, password} = req.body;
     
@@ -73,12 +62,23 @@ app.post('/api/login', (req, res) => {
     })
 })
 
+app.get('/api/settings', jwtMW, (req, res) => {
+    res.json({
+        success: true,
+        myContent: 'Settings page.' 
+    })
+})
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'))
+})
+
 app.use(function (err, req, res, next){
     if(err.name === "UnauthorizedError"){
         res.status(401).json({
             success: false,
             officalError: err,
-            err: 'Login to view this page!'
+            err: 'Username or password is incorrect 2.'
         })
     }
     else{
